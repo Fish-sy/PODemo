@@ -44,7 +44,7 @@ class Page(object):
         try:
             return self.driver.find_element_by_xpath(xpath)
         except:
-            print(f"页面未定位到 {xpath} 元素")
+            print(f"页面未定位到 {xpath} 元素!")
 
     def get_title(self):
         """获取当前窗口title"""
@@ -78,7 +78,7 @@ class Page(object):
             handles = self.driver.window_handles
             self.driver.switch_to.window(handles[value])
         except:
-            print(f"根据 {value} 获取句柄失败")
+            print(f"根据 {value} 获取句柄失败!")
 
     def to_frame(self, xpath):
         """内联框架"""
@@ -99,7 +99,7 @@ class Page(object):
             element = self.by_xpath(xpath)
             ActionChains(self.driver).move_to_element(element).perform()
         except:
-            print("鼠标悬停操作失败")
+            print("鼠标悬停操作失败!")
             return False
 
 
