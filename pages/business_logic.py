@@ -45,11 +45,11 @@ class Login(Page):
 
 """商城首页"""
 class HomePage(Page):
-    # 定位登录后提示信息
+    # 定位用户信息
     def hello_user(self):
-        return self.by_xpath('/html/body/div[2]/div/ul[1]/div/div/span')
+        return self.by_xpath("//*[@class='s-name']")
 
-    # 获取登录后提示信息
+    # 获取用户信息
     def hello_user_text(self):
         return self.hello_user().text
 
@@ -161,11 +161,38 @@ class MyOrder(Page):
 
     # 定位订单编号
     def order_number(self):
-        return self.by_xpath("//*[@id='data-list-72']/tbody/tr[1]/td/span[2]")
+        return self.by_xpath("//*[@class='user-content-body']/table[1]/tbody/tr[1]/td/span[1]")
 
     # 查看订单操作(业务流程)
     def myorder(self):
         self.click(webelement=self.myorder_button())
         return self.order_number().text
 
+
+"""Logo图标"""
+class Logo(Page):
+    # 定位logo
+    def logo_button(self):
+        return self.by_xpath("//*[@class='logo-big']/a/img")
+
+    # 点击logo
+    def logo(self):
+        self.click(webelement=self.logo_button())
+        return Logout(self.driver)
+
+
+"""注销"""
+class Logout(Page):
+    # 定位退出按钮
+    def logout_button(self):
+        return self.by_xpath("//*[text()='退出' and @class='member-logout']")
+
+    # 定位用户信息
+    def user_message(self):
+        return self.by_xpath("//*[@class='s-name']")
+
+    # 退出(业务流程)
+    def logout(self):
+        self.click(webelement=self.logout_button())
+        return self.user_message().text
 

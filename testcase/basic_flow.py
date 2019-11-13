@@ -7,6 +7,7 @@ from pages.business_logic import Search
 from pages.business_logic import Shop
 from pages.business_logic import AccountOrder
 from pages.business_logic import MyOrder
+from pages.business_logic import Logo
 
 """
     第三层:
@@ -56,11 +57,21 @@ class BasicFlow(unittest.TestCase):
         order_page = order_for.accountorder()
         self.assertEqual('支付成功', order_page)
 
-    def test_to_view_order(self):
+    def test_to_my_order(self):
         """我的订单"""
         # 调用MyOrder方法
         order_for = MyOrder(driver=self.driver)
-        print(order_for)
+        order_number = order_for.myorder()
+        print(order_number)
+
+    def test_withdraw_from(self):
+        """退出"""
+        # 调用Logo方法
+        logo_for = Logo(driver=self.driver)
+        home_page = logo_for.logo()
+        # 调用Logout方法
+        user_text = home_page.logout()
+        self.assertNotIn('123@qq.com', user_text)
 
     @classmethod
     def tearDownClass(cls) -> None:
