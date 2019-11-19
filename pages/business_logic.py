@@ -96,7 +96,7 @@ class Shop(Page):
 
     # 选择存储
     def sellphone_storage(self):
-        return self.by_xpath("//*[@data-value='128G']")
+        return self.by_xpath("//*[@data-value='32G']")
 
     # 定位加入购物车按钮
     def add_cart_button(self):
