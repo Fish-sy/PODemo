@@ -1,20 +1,21 @@
-from selenium import webdriver
 import unittest
-from common import readconfig
+from selenium import webdriver
+from pages.log import TestLog
 
 
-# 测试用例初始化操作
-class Initialize(unittest.TestCase):
+log = TestLog().getlog()
+class MyunitTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = webdriver.Chrome()
-        cls.driver.get(readconfig.url)
         cls.driver.maximize_window()
         cls.driver.implicitly_wait(10)
+        log.info("opened the browser successed!")
 
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
+        log.info("quit the browser success!")
 
 
 
