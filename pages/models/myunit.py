@@ -1,9 +1,11 @@
 import unittest
 from selenium import webdriver
-from pages.log import TestLog
+from pages.models.log import TestLog
 
 
 log = TestLog().getlog()
+
+
 class MyunitTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -16,7 +18,3 @@ class MyunitTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.driver.quit()
         log.info("quit the browser success!")
-
-
-
-
