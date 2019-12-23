@@ -12,7 +12,7 @@ class MyunitTest(unittest.TestCase):
         cls.driver = webdriver.Chrome()
         cls.driver.maximize_window()
         cls.driver.implicitly_wait(10)
-        log.info("opened the browser successed!")
+        log.info("opened the browser success!")
 
     @classmethod
     def tearDownClass(cls):
