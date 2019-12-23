@@ -1,6 +1,6 @@
 # coding = utf-8
 
-import unittest
+import unittest, os
 from selenium import webdriver
 from pages.business_logic import Login
 from pages.business_logic import Search
@@ -8,19 +8,20 @@ from pages.business_logic import Shop
 from pages.business_logic import AccountOrder
 from pages.business_logic import MyOrder
 from pages.business_logic import Logo
+from pages.models.myunit import MyunitTest
+from pages.models.log import TestLog
+from BeautifulReport import BeautifulReport
+from common import conf
 
 """
     第三层:
     -使用单元测试框架对封装好的业务逻辑层进行测试
 """
 
-
-class BasicFlow(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.driver = webdriver.Chrome()
-        cls.driver.maximize_window()
-        cls.driver.implicitly_wait(10)
+log = TestLog().getlog()
+class BasicFlow(MyunitTest):
+    def save_img(self, img_name):
+        self.driver.get_screenshot_as_file('{}/{}.png'.format(conf.imagePath, img_name))
 
     def test_login(self):
         """登录"""
@@ -43,6 +44,7 @@ class BasicFlow(unittest.TestCase):
         text_commodity = search_page.commodity_title()
         self.assertIn('苹果', text_commodity)
 
+    @BeautifulReport.add_test_img('test_shop')
     def test_shop(self):
         """购物车"""
         # 调用Shop方法
@@ -62,7 +64,7 @@ class BasicFlow(unittest.TestCase):
         # 调用MyOrder方法
         order_for = MyOrder(driver=self.driver)
         order_number = order_for.myorder()
-        print(order_number)
+        log.info("订单日期: %s" % order_number)
 
     def test_withdraw_from(self):
         """退出"""
@@ -72,11 +74,6 @@ class BasicFlow(unittest.TestCase):
         # 调用Logout方法
         user_text = home_page.logout()
         self.assertNotIn('123@qq.com', user_text)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.driver.quit()
-
 
 if __name__ == '__main__':
     unittest.main()
