@@ -1,6 +1,7 @@
 import os
 import time
 import logging
+from common import conf
 
 
 class TestLog(object):
@@ -10,7 +11,7 @@ class TestLog(object):
         self.logger.setLevel(logging.DEBUG)
         # 创建一个handler，用于写入log
         self.log_time = time.strftime('%Y-%m-%d')
-        self.log_path = os.path.join(os.path.abspath(os.path.dirname(os.getcwd()) + "\\report\\" + "\\Log\\" + "log"))
+        self.log_path = conf.logPath
         self.log_name = self.log_path + self.log_time + '.log'
 
         # 日志输出格式

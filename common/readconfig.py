@@ -1,12 +1,29 @@
-import configparser
+import logging
 import os
+import configparser
+# from pages.models.log import TestLog
+from common import conf
 
-conf = configparser.RawConfigParser()
-# 读取文件
-conf.read(os.path.join(os.getcwd(), 'common\\config.ini'))
-# 获取账号、密码
-username = conf.get("Login", "username")
-password = conf.get("Login", "password")
 
-# 获取url
-url = conf.get("Address", "base_url")
+log = logging.Logger(__name__)
+class DoConfig(object):
+
+    def __init__(self):
+        self.config = configparser.ConfigParser()
+
+    def getConfValue(self, filename, section, option):
+        try:
+            self.config.read(filename)
+            value = self.config.get(section, option)
+        except Exception as e:
+            log.error('read file [%s] for [%s] failed , did not get the value' % (filename, section))
+            raise e
+        else:
+            log.error('read config value [%s] success!' % value)
+            return value
+
+
+if __name__ == '__main__':
+    read_config = DoConfig()
+    value = read_config.getConfValue(os.path.join(conf.curPath, 'config.ini'), 'project', 'project_path')
+    print(value)
