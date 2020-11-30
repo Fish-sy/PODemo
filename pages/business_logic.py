@@ -19,15 +19,15 @@ class Login(Page):
 
     # 登录账号框定位
     def form_username(self):
-        return self.by_xpath("/html/body/div[5]/div/form/fieldset/div[1]/input")
+        return self.by_xpath("//input[@name='accounts']")
 
     # 登录密码框定位
     def form_password(self):
-        return self.by_xpath("/html/body/div[5]/div/form/fieldset/div[2]/input")
+        return self.by_xpath("//input[@name='pwd']")
 
     # 提交按钮定位
     def login_submit(self):
-        return self.submit('/html/body/div[5]/div/form/fieldset/p/button')
+        return self.submit('//button[text()="登录"]')
 
     # 登录信息定位
     def login_error_text(self):

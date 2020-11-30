@@ -1,46 +1,62 @@
 # coding = utf-8
 
+import traceback
+from common import log
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 
 """
     第一层:二次封装selenium,定义一个所有页面都继承的Page类
 """
+logger_F = log.logging.getLogger('F')
+logger_C = log.logging.getLogger('C')
 
-"""
-def open_browser(name, url):
-    if name == 'chrome':
-        driver = webdriver.Chrome()
-        print('Starting for Chrome')
-    elif name == 'ie':
-        driver = webdriver.Ie()
-        print('Starting for IE')
-    elif name == 'ff':
-        driver = webdriver.Firefox()
-        print('Starting for FireFox')
-    driver.get(url)
-    driver.maximize_window()
-    return driver
-"""
 
 class Page(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def max_window(self):
-        """窗口最大化"""
+    def open_browser(self, br='gc'):
+        """
+        打开浏览器
+        :param br: 默认使用谷歌驱动调用谷歌浏览器
+        :return: 打开成功
+        """
+        if br == 'gc':
+            # 使用缓存加载页面
+            option = Options()
+            user_file = os.environ["USERPROFILE"]
+            option.add_argument("--user-data-dir=%s\\AppData\\Local\\Google\\Chrome\\User Data" % user_file)
+            self.driver = webdriver.Chrome()
+        elif br == 'ie':
+            self.driver = webdriver.Ie()
+        elif br == 'ff':
+            self.driver = webdriver.Firefox()
         self.driver.maximize_window()
+        self.driver.implicitly_wait(10)
+        return True
 
-    def _open(self, url):
-        """打开URL"""
-        self.driver.get(url)
+    def open(self, url):
+        """
+        打开网址
+        :param url: 输入网址
+        :return: 打开成功/失败
+        """
+        try:
+            self.driver.get(url)
+        except Exception as e:
+            logger_F.exception(e, traceback.print_exc())
+            raise ValueError(f'访问 {url} 失败, 请重新输入!')
+        else:
+            logger_F.info(f'访问 {url} 成功!')
 
-    def open(self, base_url):
-        """调用_open"""
-        self._open(base_url)
 
     def by_xpath(self, xpath):
-        """封装xpath定位"""
+        """
+        xpath定位元素
+        :param xpath: xpath表达式
+        :return: 定位道德元素
+        """
         try:
             return self.driver.find_element_by_xpath(xpath)
         except:

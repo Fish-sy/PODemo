@@ -1,29 +1,34 @@
-import logging
-import os
+from common import log
 import configparser
-# from pages.models.log import TestLog
-from common import conf
+
+logger_F = log.logging.getLogger('F')
 
 
-log = logging.Logger(__name__)
-class DoConfig(object):
+class DoConfig:
 
     def __init__(self):
         self.config = configparser.ConfigParser()
 
-    def getConfValue(self, filename, section, option):
+    def getConfValue(self, filename, section, name):
+        """
+        获取文件内容
+        :param filename: 要读取的文件
+        :param section: 字段名
+        :param name: section的键
+        :return: section的值
+        """
         try:
-            self.config.read(filename)
-            value = self.config.get(section, option)
+            self.config.read(filename, encoding='utf-8')
+            value = self.config.get(section, name)
         except Exception as e:
-            log.error('read file [%s] for [%s] failed , did not get the value' % (filename, section))
-            raise e
+            logger_F.info(f'读取 {filename} 中的 {section} 失败,获取不到 {value}')
+            logger_F.error(e)
         else:
-            log.error('read config value [%s] success!' % value)
+            logger_F.info(f'读取 {value} 成功!')
             return value
 
 
 if __name__ == '__main__':
     read_config = DoConfig()
-    value = read_config.getConfValue(os.path.join(conf.curPath, 'config.ini'), 'project', 'project_path')
+    value = read_config.getConfValue('mysql', 'mysql_db1')
     print(value)

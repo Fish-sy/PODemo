@@ -1,8 +1,6 @@
 # coding = utf-8
-
 import unittest
-import os
-import HTMLTestRunner
+import HtmlTestRunner
 import time
 from BeautifulReport import BeautifulReport
 from common import conf
