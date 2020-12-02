@@ -30,5 +30,5 @@ class DoConfig:
 
 if __name__ == '__main__':
     read_config = DoConfig()
-    value = read_config.getConfValue('mysql', 'mysql_db1')
+    value = read_config.getConfValue('./config.ini', 'mysql', 'mysql_db')
     print(value)

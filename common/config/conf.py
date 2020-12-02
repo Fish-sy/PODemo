@@ -26,5 +26,9 @@ reportPath = os.path.join(proPath, "report", "TestReport\\")
 # 保存日志路径
 logPath = os.path.join(proPath, "report", "Log\\")
 
-# 测试数据路径
+# 测试脚本路径
 dataPath = os.path.join(proPath, "testcase", "testdata\\")
+
+# Excel文件路径
+excelPath = \
+    os.path.join(proPath, 'data', 'TestData')

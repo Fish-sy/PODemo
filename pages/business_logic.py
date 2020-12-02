@@ -13,34 +13,76 @@ import time
 
 """登录"""
 class Login(Page):
-    # 登录按钮定位(未登录)
     def login_button(self):
-        return self.by_xpath("//*[text()='登录' and @class='am-btn-primary btn']")
+        """
+        定位登录按钮(未登录)
+        :return: 元素定位
+        """
+        return self.by_xpath("//*[@class='red']")
 
-    # 登录账号框定位
-    def form_username(self):
-        return self.by_xpath("//input[@name='accounts']")
+    def login_username(self):
+        """
+        定位登录账号框
+        :return: 元素定位
+        """
+        return self.by_xpath("//*[@id='username']")
 
-    # 登录密码框定位
-    def form_password(self):
-        return self.by_xpath("//input[@name='pwd']")
+    def login_password(self):
+        """
+        定位登录密码框
+        :return: 元素定位
+        """
+        return self.by_xpath("//*[@id='password']")
 
-    # 提交按钮定位
+    def login_verify_code(self):
+        """
+        定位验证码
+        :return: 元素定位
+        """
+        return self.by_xpath("//*[@id='verify_code']")
+
     def login_submit(self):
-        return self.submit('//button[text()="登录"]')
+        """
+        定位登录按钮
+        :return: 元素定位
+        """
+        return self.submit("//*[@name='sbtbutton']")
 
-    # 登录信息定位
-    def login_error_text(self):
-        return self.by_xpath("//*[@id='common-prompt']/p")
-
-    # 登录操作(业务逻辑)
-    def login(self, username, password):
-        self.open('http://47.93.233.188/gpshop')
+    def login(self, username, password, verifycode=1):
+        """
+        登录操作(业务逻辑)
+        :param username: 用户名
+        :param password: 密码
+        :return: 个人信息页面
+        """
+        self.get_url('http://192.168.241.131/index.php')
         self.click(webelement=self.login_button())
-        self.send_key(webelement=self.form_username(), keys=username)
-        self.send_key(webelement=self.form_password(), keys=password)
+        self.send_key(webelement=self.login_username(), keys=username)
+        self.send_key(webelement=self.login_password(), keys=password)
+        self.send_key(webelement=self.login_verify_code(), keys=verifycode)
         self.login_submit()
-        return HomePage(self.driver)
+        time.sleep(1)
+        return Information()
+
+
+"""个人信息页面"""
+class Information(Page):
+    def _info_text(self):
+        """
+        定位登录用户信息
+        :return: 元素定位
+        """
+        return self.by_xpath("//*[@class='red userinfo']']")
+
+    def get_text(self):
+        return self._info_text().text
+
+    def info_home(self):
+        """
+        定位返回首页按钮
+        :return: 元素定位elementDate.xlsx
+        """
+        return self.by_xpath("//*[@class='home']")
 
 
 """商城首页"""

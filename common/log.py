@@ -24,7 +24,7 @@ logging.config.dictConfig({
             "level": "INFO",
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "formatter",
-            "filename": './' + "/data/logs/" + time.strftime('%Y-%m-%d') + ".log",
+            "filename": '../' + "/data/logs/" + time.strftime('%Y-%m-%d') + ".log",
             "encoding": "utf-8",
             "mode": "w"
         }

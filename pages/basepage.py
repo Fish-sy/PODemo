@@ -12,55 +12,54 @@ logger_F = log.logging.getLogger('F')
 logger_C = log.logging.getLogger('C')
 
 
-class Page(object):
-    def __init__(self, driver):
-        self.driver = driver
+class Page:
+    def __init__(self):
+        self.driver = None
 
-    def open_browser(self, br='gc'):
+    def open_browser(self, browser='gc'):
         """
         打开浏览器
-        :param br: 默认使用谷歌驱动调用谷歌浏览器
+        :param browser: 默认使用谷歌驱动调用谷歌浏览器
         :return: 打开成功
         """
-        if br == 'gc':
+        if browser == 'gc':
             # 使用缓存加载页面
-            option = Options()
-            user_file = os.environ["USERPROFILE"]
-            option.add_argument("--user-data-dir=%s\\AppData\\Local\\Google\\Chrome\\User Data" % user_file)
+            # option = Options()
+            # user_file = os.environ["USERPROFILE"]
+            # option.add_argument("--user-data-dir=%s\\AppData\\Local\\Google\\Chrome\\User Data" % user_file)
             self.driver = webdriver.Chrome()
-        elif br == 'ie':
+        elif browser == 'ie':
             self.driver = webdriver.Ie()
-        elif br == 'ff':
+        elif browser == 'ff':
             self.driver = webdriver.Firefox()
         self.driver.maximize_window()
         self.driver.implicitly_wait(10)
-        return True
+        return self.driver
 
-    def open(self, url):
+    def get_url(self, url):
         """
-        打开网址
-        :param url: 输入网址
+        打开url
+        :param url: url
         :return: 打开成功/失败
         """
         try:
-            self.driver.get(url)
+            self.open_browser().get(url)
         except Exception as e:
             logger_F.exception(e, traceback.print_exc())
             raise ValueError(f'访问 {url} 失败, 请重新输入!')
         else:
             logger_F.info(f'访问 {url} 成功!')
 
-
     def by_xpath(self, xpath):
         """
         xpath定位元素
         :param xpath: xpath表达式
-        :return: 定位道德元素
+        :return: 定位到的元素
         """
         try:
             return self.driver.find_element_by_xpath(xpath)
         except:
-            print(f"页面未定位到 {xpath} 元素!")
+            logger_F.info(f"页面未定位到 {xpath} 元素!")
 
     def get_title(self):
         """获取当前窗口title"""
@@ -94,7 +93,7 @@ class Page(object):
             handles = self.driver.window_handles
             self.driver.switch_to.window(handles[value])
         except:
-            print(f"根据 {value} 获取句柄失败!")
+            logger_F.info(f"根据 {value} 获取句柄失败!")
 
     def to_frame(self, xpath):
         """内联框架"""
@@ -115,7 +114,7 @@ class Page(object):
             element = self.by_xpath(xpath)
             ActionChains(self.driver).move_to_element(element).perform()
         except:
-            print("鼠标悬停操作失败!")
+            logger_F.info("鼠标悬停操作失败!")
             return False
 
 

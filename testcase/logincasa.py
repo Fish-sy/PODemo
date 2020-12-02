@@ -8,7 +8,9 @@ import os
 from selenium import webdriver
 from openpyxl import load_workbook
 from time import sleep
-from common import conf
+from common.config import conf
+
+
 class logintest:
     def open(self):
         dataname = os.path.join(conf.dataPath, 'logindata.xlsx')

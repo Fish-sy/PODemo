@@ -3,7 +3,7 @@ import unittest
 import HtmlTestRunner
 import time
 from BeautifulReport import BeautifulReport
-from common import conf
+from common.config import conf
 
 case_path = '..\\testcase'
 discover = unittest.defaultTestLoader.discover(case_path, pattern="basic_flow.py")

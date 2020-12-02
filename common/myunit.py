@@ -8,18 +8,16 @@ logger_C = log.logging.getLogger('C')
 
 class MyunitTest(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
-        driver = cls.driver
-        Page(driver).open_browser()
+    def setUpClass(cls) -> None:
         logger_F.info("opened the browser success!")
 
-    def setUp(self):
+    def setUp(self) -> None:
         logger_C.info('************************starting run test cases************************')
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         logger_C.info('************************test case run completed************************')
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit()
-        logger_F.info("quit the browser success!")
+    # @classmethod
+    # def tearDownClass(cls) -> None:
+    #     cls.driver.quit()
+    #     logger_F.info("quit the browser success!")

@@ -4,7 +4,7 @@
 # @File : screenshot.py
 
 import os
-from common import conf
+from common.config import conf
 from common.log import TestLog
 
 log = TestLog().getlog()
