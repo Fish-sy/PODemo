@@ -18,7 +18,7 @@ from common.config import conf
 """
 
 
-class BasicFlow(unittest.TestCase):
+class BasicFlow(MyunitTest):
     # def save_img(self, img_name):
     #     self.driver.get_screenshot_as_file('{}/{}.png'.format(conf.ImagePath, img_name))
 
@@ -27,10 +27,10 @@ class BasicFlow(unittest.TestCase):
         username = '13800138006'
         password = '123456'
         # 调用Login方法
-        login_for = Login()
+        login_for = Login(driver=self.driver)
         info_page = login_for.login(username, password, verifycode=1)
         # 获取首页提示信息
-        text_login = info_page.get_text()
+        text_login = info_page.info_text()
         self.assertIn('summer', text_login)
 
     # def test_search(self):
@@ -89,6 +89,7 @@ class BasicFlow(unittest.TestCase):
     #     # 调用Logout方法
     #     user_text = home_page.logout()
     #     self.assertNotIn('123@qq.com', user_text)
+
 
 if __name__ == '__main__':
     unittest.main()

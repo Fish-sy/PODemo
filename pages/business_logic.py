@@ -1,6 +1,6 @@
 # coding = utf-8
 
-from pages.basepage import Page
+from pages.basepage import BasePage
 import time
 
 """
@@ -12,7 +12,7 @@ import time
 
 
 """登录"""
-class Login(Page):
+class Login(BasePage):
     def login_button(self):
         """
         定位登录按钮(未登录)
@@ -46,7 +46,7 @@ class Login(Page):
         定位登录按钮
         :return: 元素定位
         """
-        return self.submit("//*[@name='sbtbutton']")
+        return self.by_xpath("//*[@name='sbtbutton']")
 
     def login(self, username, password, verifycode=1):
         """
@@ -60,22 +60,18 @@ class Login(Page):
         self.send_key(webelement=self.login_username(), keys=username)
         self.send_key(webelement=self.login_password(), keys=password)
         self.send_key(webelement=self.login_verify_code(), keys=verifycode)
-        self.login_submit()
-        time.sleep(1)
-        return Information()
+        self.click(webelement=self.login_submit())
+        return Information(driver=self.driver)
 
 
 """个人信息页面"""
-class Information(Page):
-    def _info_text(self):
+class Information(BasePage):
+    def info_text(self):
         """
         定位登录用户信息
         :return: 元素定位
         """
-        return self.by_xpath("//*[@class='red userinfo']']")
-
-    def get_text(self):
-        return self._info_text().text
+        return self.get_value("//*[@class='red userinfo']")
 
     def info_home(self):
         """
@@ -86,7 +82,7 @@ class Information(Page):
 
 
 """商城首页"""
-class HomePage(Page):
+class HomePage(BasePage):
     # 定位用户信息
     def hello_user(self):
         return self.by_xpath("//*[@class='s-name']")
@@ -97,7 +93,7 @@ class HomePage(Page):
 
 
 """搜索"""
-class Search(Page):
+class Search(BasePage):
     # 定位搜索输入框
     def search_input(self):
         return self.by_xpath('//*[@id="search-input"]')
@@ -119,7 +115,7 @@ class Search(Page):
 
 
 """商品详细信息页面"""
-class CommodityPage(Page):
+class CommodityPage(BasePage):
     # 获取当前窗口title
     def commodity_title(self):
         self.handle(1)
@@ -127,7 +123,7 @@ class CommodityPage(Page):
 
 
 """添加购物车"""
-class Shop(Page):
+class Shop(BasePage):
     # 选择套餐
     def set_meal(self):
         return self.by_xpath("//*[@data-value='套餐一']")
@@ -160,7 +156,7 @@ class Shop(Page):
 
 
 """结算下单"""
-class AccountOrder(Page):
+class AccountOrder(BasePage):
     # 定位购物车按钮
     def shop_cart(self):
         return self.by_xpath("//*[@class='am-icon-shopping-cart am-icon-fw']")
@@ -196,7 +192,7 @@ class AccountOrder(Page):
 
 
 """我的订单"""
-class MyOrder(Page):
+class MyOrder(BasePage):
     # 定位我的订单按钮
     def myorder_button(self):
         return self.by_xpath("//a[contains(@class,'am-btn') and text()='我的订单']")
@@ -212,7 +208,7 @@ class MyOrder(Page):
 
 
 """Logo图标"""
-class Logo(Page):
+class Logo(BasePage):
     # 定位logo
     def logo_button(self):
         return self.by_xpath("//*[@class='logo-big']/a/img")
@@ -224,7 +220,7 @@ class Logo(Page):
 
 
 """注销"""
-class Logout(Page):
+class Logout(BasePage):
     # 定位退出按钮
     def logout_button(self):
         return self.by_xpath("//*[text()='退出' and @class='member-logout']")

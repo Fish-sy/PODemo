@@ -9,16 +9,16 @@ logger_C = log.logging.getLogger('C')
 
 class ReadExcel(object):
 
-    def __init__(self, fileName='elementDate.xlsx', sheetName='elementsInfo'):
+    def __init__(self, filename='elementDate.xlsx', sheetname='elementsInfo'):
         """
         初始workBook
-        :param fileName: Excel文件名
-        :param sheetName: 文件sheet名
+        :param filename: Excel文件名
+        :param sheetname: 文件sheet名
         """
         try:
-            self.excelFile = os.path.join(conf.excelPath, fileName)
+            self.excelFile = os.path.join(conf.excelPath, filename)
             self.workBook = xlrd.open_workbook(self.excelFile)
-            self.sheetName = self.workBook.sheet_by_name(sheetName)
+            self.sheetName = self.workBook.sheet_by_name(sheetname)
         except Exception:
             logger_F.exception('初始workBook失败!', exc_info=True)
             raise
@@ -43,5 +43,5 @@ class ReadExcel(object):
 
 
 if __name__ == '__main__':
-    cellValue = ReadExcel().read_excel(6, 4)
-    print(cellValue)
+    value = ReadExcel().read_excel(0, 1)
+    print(value)

@@ -3,6 +3,7 @@
 import traceback
 from common import log
 from selenium import webdriver
+from common.readexcel import ReadExcel
 from selenium.webdriver.common.action_chains import ActionChains
 
 """
@@ -10,11 +11,14 @@ from selenium.webdriver.common.action_chains import ActionChains
 """
 logger_F = log.logging.getLogger('F')
 logger_C = log.logging.getLogger('C')
+eleData = ReadExcel()    # 加载Excel中所有元素
+baseUrl = eleData.read_excel(0, 1)
 
 
-class Page:
-    def __init__(self):
-        self.driver = None
+class BasePage:
+
+    def __init__(self, driver):
+        self.driver = driver
 
     def open_browser(self, browser='gc'):
         """
@@ -36,19 +40,25 @@ class Page:
         self.driver.implicitly_wait(10)
         return self.driver
 
-    def get_url(self, url):
+    def _open(self, url):
         """
         打开url
         :param url: url
         :return: 打开成功/失败
         """
         try:
-            self.open_browser().get(url)
+            self.driver.get(url)
+            self.driver.implicitly_wait(10)
         except Exception as e:
             logger_F.exception(e, traceback.print_exc())
             raise ValueError(f'访问 {url} 失败, 请重新输入!')
         else:
             logger_F.info(f'访问 {url} 成功!')
+
+    def open(self):
+        self._open(baseUrl)
+        logger_F.info(f'{baseUrl} loading success!')
+        return baseUrl
 
     def by_xpath(self, xpath):
         """
@@ -117,4 +127,26 @@ class Page:
             logger_F.info("鼠标悬停操作失败!")
             return False
 
+    def get_value(self, xpath):
+        """
+        获取元素内容
+        :param xpath:
+        :return:
+        """
+        element = self.by_xpath(xpath)
+        value = element.text
+        return value
 
+    def j_script(self, src):
+        """
+
+        :param src:
+        :return:
+        """
+        try:
+            self.driver.excute_script(src)
+        except Exception as e:
+            logger_F.exception('execute js script [%s] failed ' % src)
+            raise e
+        else:
+            logger_C.info('execute js script [%s] successed ' % src)
